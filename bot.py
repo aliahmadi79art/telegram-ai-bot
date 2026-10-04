@@ -12,7 +12,10 @@ BASE_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 def send_message(chat_id, text):
     requests.post(
         f"{BASE_URL}/sendMessage",
-        json={"chat_id": chat_id, "text": text},
+        json={
+            "chat_id": chat_id,
+            "text": text
+        },
         timeout=30
     )
 
@@ -54,7 +57,7 @@ while True:
             if text == "/start":
                 send_message(
                     chat_id,
-                    "سلام 👋\nپیامت رو بفرست تا با هوش مصنوعی جواب بدم."
+                    "سلام! 👋\nپیامت رو بفرست تا با هوش مصنوعی جواب بدم."
                 )
                 continue
 
@@ -62,10 +65,10 @@ while True:
                 answer = ask_ai(text)
                 send_message(chat_id, answer)
 
-            except Exception:
+            except Exception as e:
                 send_message(
                     chat_id,
-                    "متأسفم، مشکلی پیش اومد. دوباره امتحان کن."
+                    f"خطای OpenAI: {type(e).__name__}: {e}"
                 )
 
     except Exception:
